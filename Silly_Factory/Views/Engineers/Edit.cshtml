@@ -1,0 +1,31 @@
+@{
+  Layout = "_Layout";
+}
+
+@model Silly_Factory.Models.Engineer
+
+<h2>Edit</h2>
+<br>
+<br>
+<h4>Editing the Engineer: @Html.DisplayFor(model => model.Name)</h4>
+<br>
+<br>
+@using (Html.BeginForm())
+{
+  @Html.HiddenFor(model => model.EngineerId)
+
+  @Html.LabelFor(model => model.Name)
+  @Html.EditorFor(model => model.Name)
+
+  @Html.Label("Select Machine")
+  @Html.DropDownList("MachineId")
+<br>
+<br>
+  <input type="submit" value="Save" />
+}
+<br>
+<br>
+<br>
+<p>@Html.ActionLink("Engineers", "Index")</p>
+<p>@Html.ActionLink("Machines", "Index", "Machines")</p>
+<p>@Html.ActionLink("Home", "Index", "Home")</p>

@@ -1,0 +1,23 @@
+@{
+  Layout = "_Layout";
+}
+
+@model Silly_Factory.Models.Machine
+
+<h4>Add a New Machine</h4>
+<br>
+<br>
+@using (Html.BeginForm())
+{
+  @Html.LabelFor(model => model.Name)
+  @Html.TextBoxFor(model => model.Name)
+ <br>
+ <br>
+  <input type="submit" value="Add New Machine"/>
+}
+<br>
+<br>
+<br>
+<p>@Html.ActionLink("Machines", "Index")</p>
+<p>@Html.ActionLink("Engineers", "Index", "Engineers")</p>
+<p>@Html.ActionLink("Home", "Index", "Home")</p>
