@@ -19,5 +19,12 @@ namespace Silly_Factory.Controllers
       {
         return View();
       }
+
+      public ActionResult Details(int id)
+      {
+        List<Engineer> model = _db.Engineers.Include(engineer => engineer.Machine)ToList();
+        List<Machine> model = _db.Machines.Include(machine => machine.Engineer).ToList();
+        return View(model);
+      }
     }
 }
