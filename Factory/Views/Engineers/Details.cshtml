@@ -9,20 +9,29 @@
 <br>
 @using (Html.BeginForm()) 
 {
-  <p>@Html.DisplayNameFor(model => model.Name): @Html.DisplayFor(model => model.Name)</p>
+  <p>@Html.Label("Name"): @Html.DisplayFor(model => model.EngineerName)</p>
   <br>
   <p>Machines:</p>
-  <ul>
-  @foreach(var join in Model.JoinEngineerMachine)
+   
+  @if (@Model.Machines.Count == 0)
   {
-    <li><a href=/Machines/Details/@join.Machine.MachineId>@join.Machine.Name</a></li>
+    <h5>No Machines Added!</h5>
+  }
+  else
+  {
+  <ul>
+  @foreach(var join in Model.Machines)
+  {
+    <li><a href=/Machines/Details/@join.Machine.MachineId>@join.Machine.MachineName</a></li>
   }
   </ul>
+  }
 }
 <br>
 <br>
 <br>
 <p>@Html.ActionLink("Add a Machine", "AddMachine", new { id = Model.EngineerId })</p>
+<p>@Html.ActionLink("Remove a Machine", "RemoveMachine", new { id = Model.EngineerId })</p>
 <p>@Html.ActionLink("Edit Engineer", "Edit", new { id = Model.EngineerId })</p>
 <p>@Html.ActionLink("Delete Engineer", "Delete", new { id = Model.EngineerId })</p>
 <p>@Html.ActionLink("Engineers", "Index")</p>
