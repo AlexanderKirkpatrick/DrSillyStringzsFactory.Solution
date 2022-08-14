@@ -1,0 +1,21 @@
+@{
+  Layout = "_Layout";
+}
+
+@model Factory.Models.EngineerMachine
+@using Factory.Models
+
+<h2>Remove an Engineer</h2>
+<br>
+<br>
+<h4>Remove an Engineer from this Machine</h4>
+<br>
+<h4>@Html.Label($"{ViewBag.Engineer.EngineerName} from {ViewBag.Machine.MachineName}")</h4>
+@using (Html.BeginForm())
+{
+  <h5>Confirm Removal</h5>
+  <input type="submit" value="Save" />
+}
+<br>
+<br>
+<p>@Html.ActionLink("Back to list", "Index")</p>
