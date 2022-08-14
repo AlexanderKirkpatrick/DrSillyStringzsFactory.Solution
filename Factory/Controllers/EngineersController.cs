@@ -38,7 +38,7 @@ namespace Factory.Controllers
     public ActionResult Details(int id)
     {
       var thisEngineer = _db.Engineers
-        .Include(engineer => engineer.JoinEngineerMachine)
+        .Include(engineer => engineer.Machines)
         .ThenInclude(join => join.Machine)
         .FirstOrDefault(engineer => engineer.EngineerId == id);
       return View(thisEngineer);
@@ -47,7 +47,7 @@ namespace Factory.Controllers
     public ActionResult Edit(int id)
     {
       var thisEngineer = _db.Engineers.FirstOrDefault(engineer => engineer.EngineerId == id);
-      ViewBag.MachineId = new SelectList(_db.Machines, "MachineId", "Name");
+      ViewBag.MachineId = new SelectList(_db.Machines, "MachineId", "MachineName");
       return View(thisEngineer);
     }
 
@@ -77,7 +77,7 @@ namespace Factory.Controllers
     public ActionResult AddMachine(int id)
     {
       var thisEngineer = _db.Engineers.FirstOrDefault(engineer => engineer.EngineerId == id);
-      ViewBag.MachineId = new SelectList(_db.Machines, "MachineId", "Name");
+      ViewBag.MachineId = new SelectList(_db.Machines, "MachineId", "MachineName");
       return View(thisEngineer);
     }
 
@@ -86,19 +86,27 @@ namespace Factory.Controllers
     {
       if (MachineId != 0)
       {
-        _db.EngineerMachine.Add(new EngineerMachine() { MachineId = MachineId, EngineerId = engineer.EngineerId });
+        _db.EngineerMachines.Add(new EngineerMachine() { MachineId = MachineId, EngineerId = engineer.EngineerId });
         _db.SaveChanges();
       }
-      return RedirectToAction("Index");
+      return RedirectToAction("Details", new { id = engineer.EngineerId });
     }
 
-    [HttpPost]
-    public ActionResult DeleteMachine(int joinId)
+    public ActionResult RemoveMachine(int id)
     {
-        var joinEntry = _db.EngineerMachine.FirstOrDefault(entry => entry.EngineerMachineId == joinId);
-        _db.EngineerMachine.Remove(joinEntry);
-        _db.SaveChanges();
-        return RedirectToAction("Index");
+      var joinEntry = _db.EngineerMachines.FirstOrDefault(entry => entry.EngineerMachineId == id);
+      ViewBag.Engineer = _db.Engineers.FirstOrDefault(engineer => engineer.EngineerId == joinEntry.EngineerId);
+      ViewBag.Machine = _db.Machines.FirstOrDefault(machine => machine.MachineId == joinEntry.MachineId);
+      return View(joinEntry);
+    }
+
+    [HttpPost, ActionName("RemoveMachine")]
+    public ActionResult RemoveMachineConfirmed(int id)
+    {
+      var joinEntry = _db.EngineerMachines.FirstOrDefault(entry => entry.EngineerMachineId == id);
+      _db.EngineerMachines.Remove(joinEntry);
+      _db.SaveChanges();
+      return RedirectToAction("Details", new { id = joinEntry.EngineerId });
     }
   }
 }
